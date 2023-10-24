@@ -1,40 +1,28 @@
-const CriacaoTabela = require('./scripts/CriacaoTabela');
-const ConexaoBD = require('./scripts/Conexao');
-const LeituraLog = require('./scripts/LeituraLog');
-const Print = require('./scripts/Print');
+const InitializeDatabase = require('./scripts/CriacaoTabela');
+const ConnectToDB = require('./scripts/Conexao');
+const ProcessLog = require('./scripts/LeituraLog');
+const DisplayResults = require('./scripts/Print');
 
-async function main() {
-  let conn;
+async function application() {
+  let dbConnection;
 
   try {
-    conn = await ConexaoBD(); 
-    await CriacaoTabela(conn);
-    await LeituraLog();
-    await Print(conn);
+    dbConnection = await ConnectToDB(); 
+    await dbConnection.query('BEGIN');
+    await InitializeDatabase(dbConnection);
+    await ProcessLog();
+    await DisplayResults(dbConnection);
+    await dbConnection.query('COMMIT');
   } catch (error) {
-    if (conn) {
-      await conn.query('ROLLBACK');
+    if (dbConnection) {
+      await dbConnection.query('ROLLBACK');
     }
-    console.error('Erro', error);
+    console.error('Erro na aplicação', error);
   } finally {
-    if (conn) {
-      await conn.end(); 
+    if (dbConnection) {
+      await dbConnection.end(); 
     }
   }
-
-  /*async function imprimirConteudoBanco() {
-    try {
-      const db = await ConexaoBD();
-      const result = await db.query('SELECT * FROM DATA');
-      console.log("Conteúdo do banco de dados atualizado:");
-      console.table(result.rows);
-    } catch (error) {
-      console.error('Erro ao imprimir o conteúdo do banco de dados:', error);
-    }
-  }
-  
-  // Chame esta função após a execução do UNDO
-  imprimirConteudoBanco();*/
 }
 
-main();
+application();
