@@ -24,7 +24,7 @@ async function CriacaoTabela() {
 
     await db.query(insertInitialValuesSQL);
   } catch (error) {
-    console.error('Erro ao criar a tabela e inserir os valores iniciais:', error);
+    console.error('Erro para criar tabela: ', error);
   }
 }
 module.exports = CriacaoTabela;
