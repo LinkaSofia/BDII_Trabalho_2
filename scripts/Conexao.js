@@ -8,7 +8,7 @@ const dbConfig = {
   port: 5432,
 };
 
-async function connectToDatabase() {
+async function ConexaoBD() {
   const client = new Client(dbConfig);
   try {
     await client.connect();
@@ -19,4 +19,4 @@ async function connectToDatabase() {
   }
 }
 
-module.exports = connectToDatabase;
+module.exports = ConexaoBD;

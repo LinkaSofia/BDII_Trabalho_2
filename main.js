@@ -1,15 +1,16 @@
-const { read } = require('fs');
 const CriacaoTabela = require('./scripts/CriacaoTabela');
-const connectToDatabase = require('./scripts/Conexao');
+const ConexaoBD = require('./scripts/Conexao');
 const LeituraLog = require('./scripts/LeituraLog');
+const Print = require('./scripts/Print');
 
 async function main() {
   let conn;
 
   try {
-    conn = await connectToDatabase(); 
+    conn = await ConexaoBD(); 
     await CriacaoTabela(conn);
-    LeituraLog();
+    await LeituraLog();
+    await Print(conn);
   } catch (error) {
     if (conn) {
       await conn.query('ROLLBACK');
@@ -23,7 +24,7 @@ async function main() {
 
   /*async function imprimirConteudoBanco() {
     try {
-      const db = await connectToDatabase();
+      const db = await ConexaoBD();
       const result = await db.query('SELECT * FROM DATA');
       console.log("Conteúdo do banco de dados atualizado:");
       console.table(result.rows);

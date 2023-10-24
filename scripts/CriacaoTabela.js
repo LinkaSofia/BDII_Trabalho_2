@@ -1,9 +1,9 @@
-const connectToDatabase = require('./Conexao');
+const ConexaoBD = require('./Conexao');
 const metadata = require('../Files/metadata.json');
 
 async function CriacaoTabela() {
   try {
-    const db = await connectToDatabase();
+    const db = await ConexaoBD();
     const { table } = metadata;
     await db.query(`DROP TABLE IF EXISTS DATA;`);
     

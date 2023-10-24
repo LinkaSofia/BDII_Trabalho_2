@@ -1,5 +1,5 @@
 const fs = require("fs");
-const connectToDatabase = require("./Conexao");
+const ConexaoBD = require("./Conexao");
 
 // Expressões regulares
 const erStart = /<start T\d+>/;
@@ -55,7 +55,7 @@ async function LerLog() {
       .match(/[^<>, ]+/g)
       .slice(1);
     try {
-      const db = await connectToDatabase();
+      const db = await ConexaoBD();
       // UNDO
       const undo = `UPDATE DATA SET ${valores[1]} = ${valores[2]} WHERE id = ${valores[0]};`;
       await db.query(undo);
