@@ -4,23 +4,23 @@ const ProcessLog = require('./scripts/LeituraLog');
 const DisplayResults = require('./scripts/Print');
 
 async function application() {
-  let dbConnection;
+  let Conexao;
 
   try {
-    dbConnection = await ConnectToDB(); 
-    await dbConnection.query('BEGIN');
-    await InitializeDatabase(dbConnection);
+    Conexao = await ConnectToDB(); 
+    await Conexao.query('BEGIN');
+    await InitializeDatabase(Conexao);
     await ProcessLog();
-    await DisplayResults(dbConnection);
-    await dbConnection.query('COMMIT');
+    await DisplayResults(Conexao);
+    await Conexao.query('COMMIT');
   } catch (error) {
-    if (dbConnection) {
-      await dbConnection.query('ROLLBACK');
+    if (Conexao) {
+      await Conexao.query('ROLLBACK');
     }
     console.error('Erro na aplicação', error);
   } finally {
-    if (dbConnection) {
-      await dbConnection.end(); 
+    if (Conexao) {
+      await Conexao.end(); 
     }
   }
 }
