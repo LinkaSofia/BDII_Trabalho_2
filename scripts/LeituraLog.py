@@ -1,3 +1,5 @@
+# Biblioteca para trabalhar com expressões regulares
+import re
 from scripts.Conexao import conexao
 
 # Definindo as expressoões regulares para cada tipo de linha
@@ -10,3 +12,8 @@ rx_commit = r"<commit T\d+>"
 # Transações no formato: <START CKPT (T1)>
 rx_ckpt = r"<START CKPT\(T\d+\)>"
 rx_end_ckpt = r"<END CKPT>"
+
+
+def LeituraLog():
+    le_arquivo = (open("./scripts/Files/entradaLog.txt", "r", encoding="utf-8").readlines())
+    print (le_arquivo)
