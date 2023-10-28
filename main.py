@@ -4,12 +4,19 @@ from scripts.LeituraLog import LeituraLog
 
 
 def main():
+  try:
     connection = conexao()
     #Desabilita transações implicitas (sem begin, end, commit)
     connection.autocommit = True
     cria_tabela_insere_dados()
     LeituraLog()
 
+  except Exception as error:
+    print("Erro:", error)
+  finally:
+    # Fecha a conexão se estiver aberta
+    if connection and not connection.closed:
+      connection.close()
 
 if __name__ == "__main__":
   main()
