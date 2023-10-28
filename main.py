@@ -14,7 +14,6 @@ def main():
   except Exception as error:
     print("Erro:", error)
   finally:
-    # Fecha a conexão se estiver aberta
     if connection and not connection.closed:
       connection.close()
 
