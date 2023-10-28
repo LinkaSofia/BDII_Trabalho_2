@@ -1,5 +1,5 @@
 import json
-from scripts.conexao import conexao
+from scripts.Conexao import conexao
 
 def cria_tabela_insere_dados():
     try:
