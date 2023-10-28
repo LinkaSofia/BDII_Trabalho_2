@@ -6,8 +6,8 @@ def cria_tabela_insere_dados():
         connection = conexao()
         cursor = connection.cursor()
         
-        with open("./src/data/metadado.json", "r") as metadata_file:
-            metadata = json.load(metadata_file)
+        with open("./scripts/Files/metadata.json", "r") as metadata:
+            metadata = json.load(metadata)
 
         drop_table = f"DROP TABLE IF EXISTS data"
         cursor.execute(drop_table)
