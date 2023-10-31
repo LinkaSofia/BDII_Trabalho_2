@@ -1,4 +1,6 @@
 import re
+# Para criar a tabela
+from tabulate import tabulate
 from scripts.Conexao import conexao
 
 # Define expressões regulares para cada tipo de linha
@@ -39,12 +41,11 @@ def LeituraLog():
         # Imprime estado inicial da tabela no banco
         cursor.execute("SELECT * FROM data;")
         results = cursor.fetchall()
-        print("-------------------")
+        print("\n")
         print("Valores iniciais: ")
-        for row in results:
-            print(row)
-        print("-------------------")
-        print('\n')
+        print(tabulate(results, headers=["ID", "A", "B"], tablefmt="grid"))
+        print("\n")
+        
 
         # Percorre o arquivo de log, linha a linha e processa com base nas expressões regulares
         for line in log_lines:
@@ -82,12 +83,12 @@ def LeituraLog():
             else:
                 continue
 
+        print("-------------------")
         # Percorre as transações que não foram confirmadas
         for index in uncommitted_starts:
             transaction = re.search(r'<start (T\d+)>', index).group(1)
             transaction_number = re.search(r'T(\d+)', transaction).group(1)
             undo_list.append(transaction_number)
-            print("-------------------")
             print("Transação {} realizou UNDO".format(transaction))
             
         print("-------------------")
@@ -178,11 +179,8 @@ def LeituraLog():
         print('\n')
 
         results = cursor.fetchall()
-        print("-------------------")
         print("Valores finais: ")
-        for row in results:
-            print(row)
-        print("-------------------")
+        print(tabulate(results, headers=["ID", "A", "B"], tablefmt="grid"))
 
         connection.commit()
         cursor.close()
