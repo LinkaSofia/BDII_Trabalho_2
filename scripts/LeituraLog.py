@@ -39,7 +39,7 @@ def LeituraLog():
         log_lines.reverse()
 
         # Imprime estado inicial da tabela no banco
-        cursor.execute("SELECT * FROM data;")
+        cursor.execute("SELECT * FROM data ORDER BY id ASC;")
         results = cursor.fetchall()
         print("\n")
         print("Valores iniciais: ")
@@ -134,7 +134,8 @@ def LeituraLog():
                     # Cria uma tupla com as informações da transação atual (número da transação, coluna, valor e identificador)
                     # Informações para atualizar o bd
                     queries_pending.append((transaction1, column, value, identifier))
-
+        # Converte cada elemento da lista em inteiro
+        #undo_lista_new = [int(x) for x in undo_list]
         # Percorre a lista de transações pendentes
         for transaction1, column, cleaned_value, identifier in queries_pending:
             # Lê o valor atual da coluna no bd
@@ -159,7 +160,8 @@ def LeituraLog():
                 else:
                     transaction_changes[transaction1] = [f"Alterou o id {identifier} coluna {column} para o valor {cleaned_value}"]
                 # Verifica se a transação precisa ser desfeita, se precisar, atualiza o valor do banco com o valor inicial do banco
-                if transaction1 in undo_list:
+                # Transforma em inteiro os valores de undo_list
+                if transaction1 in [int(x) for x in undo_list]:
                     query_sql = f"UPDATE data SET {column} = %s WHERE id = %s"
                     cursor.execute(query_sql, (original_value, identifier))
         # para guardar os novos valores resultantes das alterações nas transações, através do "para o valor"
@@ -175,7 +177,7 @@ def LeituraLog():
         print(f"{updated_values} são os novos valores")
         print("-------------------")
 
-        cursor.execute("SELECT * FROM data;")
+        cursor.execute("SELECT * FROM data ORDER BY id ASC;")
         print('\n')
 
         results = cursor.fetchall()
