@@ -1,5 +1,4 @@
 import re
-# Para criar a tabela
 from tabulate import tabulate
 from scripts.Conexao import conexao
 
